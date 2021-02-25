@@ -15,8 +15,12 @@ public class SortBenchmarks {
         }
         int arraySize = Integer.parseInt(arg[0]);
 
-        long sortScore = BubbleSort.sort(arraySize);
-        print(arraySize, BubbleSort.class.getName(), sortScore);
+        for(ArraySort sort : SortLoader.getArraySorts()) {
+            long sortBenchmark = sort.getBenchmark(arraySize);
+
+            print(arraySize, sort.getSortName(), sortBenchmark);
+        }
+
 
 //        long shortScore = BubbleSort.sort(SMALL);
 //        print(SMALL, BubbleSort.class.getName(), shortScore);
