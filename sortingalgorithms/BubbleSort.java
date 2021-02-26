@@ -4,12 +4,23 @@ import java.time.*;
 
 import helpers.*;
 
+import java.util.*;
+
 public class BubbleSort implements ArraySort {
 
     @Override
     public int[] sort(int[] arr) {
-        int[] sortedArray = new int[arr.length];
-        return sortedArray;
+        for(int i = 0; i < arr.length; i++) {
+            for(int p = 0; p < arr.length - 1; p++) {
+                if(arr[p] > arr[p + 1]) {
+                    int k = arr[p];
+                    arr[p] = arr[p + 1];
+                    arr[p + 1] = k;
+                }
+            }
+        }
+
+        return arr;
     }
 
     @Override
