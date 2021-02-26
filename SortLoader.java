@@ -18,6 +18,7 @@ public class SortLoader {
             e.printStackTrace();
         }
 
+        System.out.println("Found " + arraySorts.size() + " sorts");
         return arraySorts;
     }
 
@@ -62,10 +63,10 @@ public class SortLoader {
                 assert !file.getName().contains(".");
                 classes.addAll(findClasses(file,
                         packageName + "." + file.getName()));
-            } else if (file.getName().endsWith(".java") && 
-                    !file.getName().equals("ArraySort.java")) {
+            } else if (file.getName().endsWith(".class") && 
+                    !file.getName().equals("ArraySort.class")) {
 
-                classes.add(Class.forName("sortingalgorithms." + file.getName().substring(0, file.getName().length() - 5)));
+                classes.add(Class.forName("sortingalgorithms." + file.getName().substring(0, file.getName().length() - 6)));
             }
         }
         return classes;
