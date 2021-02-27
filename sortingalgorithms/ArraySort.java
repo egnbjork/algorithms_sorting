@@ -8,12 +8,17 @@ public interface ArraySort {
 
     String getSortName();
 
+    boolean isEnabled();
+
     default long getBenchmark(int arraySize) {
         int[] randomNumbers = RandomNumbersGenerator.generate(arraySize);
         long start = System.currentTimeMillis();
         int[] sortedArray = sort(randomNumbers);
         long stop = System.currentTimeMillis();
-        TestSorted.test(sortedArray, false);
+        if(TestSorted.test(sortedArray, false) > 0) {
+            System.out.println("===this sort algorithm does not work===");
+            return -1;
+        }
         return stop - start;
     }
 }

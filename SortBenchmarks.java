@@ -1,5 +1,6 @@
 import java.time.*;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.Map.Entry;
 
 import helpers.*;
@@ -16,10 +17,25 @@ public class SortBenchmarks {
             int arraySize = Integer.parseInt(arg[0]);
 
             Map<Long, String> sortMap = new TreeMap<>();
+
             for(ArraySort sort : SortLoader.getArraySorts()) {
-                System.out.println(sort.getSortName());
+                if(!sort.isEnabled()) {
+                    continue;
+                }
+
+                System.out.println("\n" + sort.getSortName());
                 long sortBenchmark = sort.getBenchmark(arraySize);
-                sortMap.put(sortBenchmark, sort.getSortName());
+
+                if(sortBenchmark < 0) {
+                    continue;
+                }
+
+                if(sortMap.containsKey(sortBenchmark)) {
+                    String sorts = sortMap.get(sortBenchmark) + ", " + sort.getSortName();
+                    sortMap.put(sortBenchmark, sorts);
+                } else {
+                    sortMap.put(sortBenchmark, sort.getSortName());
+                }
 
                 print(arraySize, sort.getSortName(), sortBenchmark);
             }
@@ -30,8 +46,17 @@ public class SortBenchmarks {
             Map<Long, String> bigSort = new TreeMap<>();
 
             for(ArraySort sort: SortLoader.getArraySorts()) {
-                System.out.println(sort.getSortName());
+                if(!sort.isEnabled()) {
+                    continue;
+                }
+
+                System.out.println("\n" + sort.getSortName());
                 long sortBenchmark = sort.getBenchmark(SMALL);
+
+                if(sortBenchmark < 0) {
+                    continue;
+                }
+
                 smallSort.put(sortBenchmark, sort.getSortName());
                 print(SMALL, sort.getSortName(), sortBenchmark);
 
@@ -50,7 +75,7 @@ public class SortBenchmarks {
     }
 
     private static void print(int elementCount, String sortName, long score) {
-        System.out.println(elementCount + " elements. " +  sortName + " " + score);
+        System.out.println(elementCount + " elements. " +  sortName + " " + convertTime(score));
     }
 
     private static void print(Map<Long, String> treeMap) {
@@ -59,8 +84,23 @@ public class SortBenchmarks {
 
         System.out.println("");
         for(Entry<Long, String> entry : entrySet) {
-            System.out.println(place++ + ". " +  entry.getValue() + " " + entry.getKey());
+            System.out.println(place++ + ". " +  entry.getValue() + " " + convertTime(entry.getKey()));
         }
+    }
+
+    private static String convertTime(long score) {
+        String time;
+
+        if(TimeUnit.MILLISECONDS.toHours(score) > 0) {
+            time = String.valueOf(TimeUnit.MILLISECONDS.toHours(score)) + "h";
+        } else if(TimeUnit.MILLISECONDS.toMinutes(score) > 0) {
+            time = String.valueOf(TimeUnit.MILLISECONDS.toMinutes(score)) + "m";
+        } else if(TimeUnit.MILLISECONDS.toSeconds(score) > 0) {
+            time = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(score)) + "s";
+        } else {
+            time = String.valueOf(score) + "ms";
+        }
+        return time;
     }
 }
 

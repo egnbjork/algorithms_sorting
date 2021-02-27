@@ -2,11 +2,14 @@ package sortingalgorithms;
 
 import java.time.*;
 
-import helpers.*;
-
 import java.util.*;
 
 public class BubbleSort implements ArraySort {
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     @Override
     public int[] sort(int[] arr) {
