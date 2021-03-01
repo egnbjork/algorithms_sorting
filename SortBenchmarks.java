@@ -16,61 +16,9 @@ public class SortBenchmarks {
         if(arg.length > 0) {
             int arraySize = Integer.parseInt(arg[0]);
 
-            Map<Long, String> sortMap = new TreeMap<>();
-
-            for(ArraySort sort : SortLoader.getArraySorts()) {
-                if(!sort.isEnabled()) {
-                    continue;
-                }
-
-                System.out.println("\n" + sort.getSortName());
-                long sortBenchmark = sort.getBenchmark(arraySize);
-
-                if(sortBenchmark < 0) {
-                    continue;
-                }
-
-                if(sortMap.containsKey(sortBenchmark)) {
-                    String sorts = sortMap.get(sortBenchmark) + ", " + sort.getSortName();
-                    sortMap.put(sortBenchmark, sorts);
-                } else {
-                    sortMap.put(sortBenchmark, sort.getSortName());
-                }
-
-                print(arraySize, sort.getSortName(), sortBenchmark);
-            }
-            print(sortMap);
+            runSingleBenchmark(arraySize);
         } else {
-            Map<Long, String> smallSort = new TreeMap<>();
-            Map<Long, String> mediumSort = new TreeMap<>();
-            Map<Long, String> bigSort = new TreeMap<>();
-
-            for(ArraySort sort: SortLoader.getArraySorts()) {
-                if(!sort.isEnabled()) {
-                    continue;
-                }
-
-                System.out.println("\n" + sort.getSortName());
-                long sortBenchmark = sort.getBenchmark(SMALL);
-
-                if(sortBenchmark < 0) {
-                    continue;
-                }
-
-                smallSort.put(sortBenchmark, sort.getSortName());
-                print(SMALL, sort.getSortName(), sortBenchmark);
-
-                sortBenchmark = sort.getBenchmark(MEDIUM);
-                mediumSort.put(sortBenchmark, sort.getSortName());
-                print(MEDIUM, sort.getSortName(), sortBenchmark);
-
-                sortBenchmark = sort.getBenchmark(BIG);
-                bigSort.put(sortBenchmark, sort.getSortName());
-                print(BIG, sort.getSortName(), sortBenchmark);
-            }
-            print(smallSort);
-            print(mediumSort);
-            print(bigSort);
+            runMultipleBenchmarks();
         }
     }
 
@@ -101,6 +49,68 @@ public class SortBenchmarks {
             time = String.valueOf(score) + "ms";
         }
         return time;
+    }
+
+    private static long runSort(ArraySort sort, int elementCount) {
+                long sortBenchmark = sort.getBenchmark(elementCount);
+                print(elementCount, sort.getSortName(), sortBenchmark);
+                return sortBenchmark;
+    }
+
+    private static void runSingleBenchmark(int arraySize) {
+            Map<Long, String> sortMap = new TreeMap<>();
+
+            for(ArraySort sort : SortLoader.getArraySorts()) {
+                if(!sort.isEnabled()) {
+                    continue;
+                }
+
+                System.out.println("\n" + sort.getSortName());
+                long sortBenchmark = runSort(sort, arraySize);
+
+                if(sortBenchmark < 0) {
+                    continue;
+                }
+
+                if(sortMap.containsKey(sortBenchmark)) {
+                    String sorts = sortMap.get(sortBenchmark) + ", " + sort.getSortName();
+                    sortMap.put(sortBenchmark, sorts);
+                } else {
+                    sortMap.put(sortBenchmark, sort.getSortName());
+                }
+            }
+            print(sortMap);
+
+    }
+
+    private static void runMultipleBenchmarks() {
+            Map<Long, String> smallSort = new TreeMap<>();
+            Map<Long, String> mediumSort = new TreeMap<>();
+            Map<Long, String> bigSort = new TreeMap<>();
+
+            for(ArraySort sort: SortLoader.getArraySorts()) {
+                if(!sort.isEnabled()) {
+                    continue;
+                }
+
+                System.out.println("\n" + sort.getSortName());
+                long sortBenchmark = runSort(sort, SMALL);
+
+                if(sortBenchmark < 0) {
+                    continue;
+                }
+
+                smallSort.put(sortBenchmark, sort.getSortName());
+
+                sortBenchmark = runSort(sort, MEDIUM);
+                mediumSort.put(sortBenchmark, sort.getSortName());
+
+                sortBenchmark = runSort(sort, BIG);
+                bigSort.put(sortBenchmark, sort.getSortName());
+            }
+            print(smallSort);
+            print(mediumSort);
+            print(bigSort);
     }
 }
 
