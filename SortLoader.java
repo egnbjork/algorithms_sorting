@@ -18,7 +18,7 @@ public class SortLoader {
             e.printStackTrace();
         }
 
-        System.out.println("Found " + arraySorts.size() + " sorts");
+        //System.out.println("Found " + arraySorts.size() + " sorts");
         return arraySorts;
     }
 
