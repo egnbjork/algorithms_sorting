@@ -8,10 +8,10 @@ import sortingalgorithms.*;
 
 
 public class SortBenchmarks {
-    private static int TINY = 5000;
-    private static int SMALL = 100000;
-    private static int MEDIUM = 500000;
-    private static int BIG = 1000000;
+    private static int TINY = 1000;
+    private static int SMALL = 10_000;
+    private static int MEDIUM = 100_000;
+    private static int BIG = 1000_000;
 
     public static void main(String[] arg) {
         if(arg.length > 0) {
@@ -37,18 +37,30 @@ public class SortBenchmarks {
     }
 
     private static String convertTime(long score) {
-        String time;
+        StringBuilder sb = new StringBuilder();
 
-        if(TimeUnit.MILLISECONDS.toHours(score) > 0) {
-            time = String.valueOf(TimeUnit.MILLISECONDS.toHours(score)) + "h";
-        } else if(TimeUnit.MILLISECONDS.toMinutes(score) > 0) {
-            time = String.valueOf(TimeUnit.MILLISECONDS.toMinutes(score)) + "m";
-        } else if(TimeUnit.MILLISECONDS.toSeconds(score) > 0) {
-            time = String.valueOf(TimeUnit.MILLISECONDS.toSeconds(score)) + "s";
-        } else {
-            time = String.valueOf(score) + "ms";
+        Duration d = Duration.ofMillis(score);
+        long hours = d.toHoursPart();
+        if(hours > 0) {
+            sb.append(hours + "h ");
         }
-        return time;
+
+        long minutes = d.toMinutesPart();
+        if(minutes > 0) {
+            sb.append(minutes + "m ");
+        }
+
+        long seconds = d.toSecondsPart();
+        if(seconds > 0) {
+            sb.append(seconds + "s ");
+        }
+
+        long milliseconds = d.toMillisPart();
+        if(milliseconds > 0) {
+            sb.append(milliseconds + "ms ");
+        }
+
+        return sb.toString();
     }
 
     private static long runSort(ArraySort sort, int elementCount) {
@@ -89,6 +101,7 @@ public class SortBenchmarks {
             es.shutdownNow();
             System.out.println("\n" + arraySize + " elements");
             print(sortMap);
+            System.out.println("");
     }
 
     private static void runMultipleBenchmarks() {
