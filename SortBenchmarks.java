@@ -8,10 +8,6 @@ import sortingalgorithms.*;
 
 
 public class SortBenchmarks {
-    private static int TINY = 1000;
-    private static int SMALL = 10_000;
-    private static int MEDIUM = 100_000;
-    private static int BIG = 1000_000;
 
     public static void main(String[] arg) {
         if(arg.length > 0) {
@@ -105,10 +101,11 @@ public class SortBenchmarks {
     }
 
     private static void runMultipleBenchmarks() {
-            runSingleBenchmark(TINY);
-            runSingleBenchmark(SMALL);
-            runSingleBenchmark(MEDIUM);
-            runSingleBenchmark(BIG);
+        int arraySize = 10;
+        for(int i = 1; i < 6; i++) {
+            arraySize *= 10;
+            runSingleBenchmark(arraySize);
+        }
     }
 }
 
