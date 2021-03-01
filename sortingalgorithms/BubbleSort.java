@@ -8,7 +8,7 @@ public class BubbleSort implements ArraySort {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return false;
     }
 
     @Override

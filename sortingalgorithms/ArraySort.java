@@ -16,7 +16,7 @@ public interface ArraySort {
         int[] sortedArray = sort(randomNumbers);
         long stop = System.currentTimeMillis();
         if(TestSorted.test(sortedArray, false) > 0) {
-            System.out.println("===this sort algorithm does not work===");
+            System.out.println("=== " + getSortName() + " algorithm does not work===");
             return -1;
         }
         return stop - start;

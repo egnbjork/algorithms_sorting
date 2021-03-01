@@ -14,16 +14,12 @@ public class InsertionSort implements ArraySort {
     @Override
     public int[] sort(int[] arr) {
         for(int i = 1; i < arr.length; i++) {
-            if(arr[i] < arr[i - 1]) {
-                int element = arr[i];
-                for(int p = i - 1; p >= 0; p--) {
-                    if(arr[p] > element) {
-                        arr[p + 1] = arr[p]; 
-                    } else {
-                        arr[p] = element;
-                    }
-                }
+            int element = arr[i];
+            int index = i;
+            while(index > 0 && arr[index - 1] > element) {
+                arr[index--] = arr[index];
             }
+            arr[index] = element;
         }
 
         return arr;
