@@ -62,8 +62,6 @@ public class SortBenchmarks {
     private static long runSort(ArraySort sort, int elementCount) {
         if(sort.isEnabled()) {
             long sortBenchmark = sort.getBenchmark(elementCount);
-            //print(elementCount, sort.getSortName(), sortBenchmark);
-            //System.out.println("\n" + sort.getSortName());
 
             return sortBenchmark;
         }
@@ -101,8 +99,8 @@ public class SortBenchmarks {
     }
 
     private static void runMultipleBenchmarks() {
-        int arraySize = 10;
-        for(int i = 1; i < 6; i++) {
+        int arraySize = 1;
+        for(int i = 1; i < 7; i++) {
             arraySize *= 10;
             runSingleBenchmark(arraySize);
         }
