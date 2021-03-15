@@ -29,7 +29,7 @@ public class QuickSort implements ArraySort {
         return arr;
       }
 
-      int pivot = getPivot(start, end); 
+      int pivot = getPivot(arr, start, end); 
 
       swap(arr, start, pivot);
 
@@ -67,8 +67,17 @@ public class QuickSort implements ArraySort {
       return arr;
     }
 
-    private static int getPivot(int min, int max) {
-      return min;
+    private static int getPivot(int[] arr, int min, int max) {
+      int pivot = 0;
+      int mid = (int) (arr.length / 2);
+
+      if(arr[min] < arr[mid] && arr[min] > arr[max]) {
+        return min;
+      } else if (arr[mid] > arr[max] && arr[mid] < arr[min]) {
+        return mid;
+      } 
+
+      return max;
     }
 }
 
